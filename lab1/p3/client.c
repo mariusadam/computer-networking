@@ -17,7 +17,7 @@
         exit(EXIT_FAILURE); \
     } while (0)
 
-int main() {
+int main(int argc, char* argv[]) {
     int c;
     uint16_t stringLength;
     struct sockaddr_in server;
@@ -25,6 +25,9 @@ int main() {
     char *sir       = NULL;
     char *reverse   = NULL;
     char serverIp[] = "193.226.40.130";
+    if (argc > 1) {
+        strcpy(serverIp, argv[1]);
+    }
 
     c = socket(AF_INET, SOCK_STREAM, 0);
     if (c < 0) {

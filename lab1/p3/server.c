@@ -13,16 +13,11 @@
 #include <stdlib.h>
 #include <arpa/inet.h>
 #include <time.h>
+#include <errno.h>
 
 #define LEVEL_DEBUG    1
 #define LEVEL_INFO     2
 #define LEVEL_CRITICAL 3
-
-#define handle_error(msg) \
-    do { \
-        perror(msg); \
-        exit(EXIT_FAILURE); \
-    } while (0)
 
 void reverseString(char *normal, char *reversed) {
     if (normal == NULL || reversed == NULL) {
@@ -106,14 +101,15 @@ void serve_client(int c) {
 
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     int s, c, len;
     char msg[65535];
     struct sockaddr_in server, client;
 
     s = socket(AF_INET, SOCK_STREAM, 0);
     if (s < 0) {
-        critical("Could not create the server socket");
+        sprintf(msg, "Could not create the server socket: %s", strerror(errno));
+        critical(msg);
         return 1;
     }
 
@@ -123,7 +119,8 @@ int main() {
     server.sin_addr.s_addr = INADDR_ANY;
 
     if (bind(s, (struct sockaddr *) &server, sizeof(server))) {
-        critical("Error when trying to bind");
+        sprintf(msg, "Error when trying to bind: %s", strerror(errno));
+        critical(msg);
         return 1;
     }
 
