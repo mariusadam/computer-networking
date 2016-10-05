@@ -4,3 +4,5 @@ CMakeLists.txt
 *.o
 *.out
 *.obj
+
+*.log
