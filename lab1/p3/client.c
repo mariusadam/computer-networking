@@ -58,10 +58,8 @@ int main(int argc, char* argv[]) {
     stringLength = strlen(sir) - 1;
     //remove trailing \n
     sir[stringLength] = '\0';
-    printf("Client: \'%s\' read %d\n", sir, stringLength);
+    printf("Client read %d bytes : \'%s\'\n", stringLength, sir);
 
-
-    printf("client: %d ========== %d\n", stringLength, htons(stringLength));
     stringLength = htons(stringLength);
     send(c, &stringLength, sizeof(stringLength), 0);
     send(c, sir, strlen(sir) + 1, 0);
@@ -69,13 +67,12 @@ int main(int argc, char* argv[]) {
     uint16_t strlenRecv;
     recv(c, &strlenRecv, sizeof(strlenRecv), MSG_WAITALL);
     strlenRecv = ntohs(strlenRecv);
-    printf("Client: received size %d\n", strlenRecv);
+    printf("Received string size %d\n", strlenRecv);
 
     reverse = (char*) malloc((strlenRecv + 1) * sizeof(char));
     memset(reverse, '\0', (strlenRecv * 1) * sizeof(char));
 
     recv(c, reverse, strlenRecv, MSG_WAITALL);
-    printf("The reversed string before is: \'%s\'(%d) \n", reverse, strlen(reverse));
     reverse[strlenRecv] = '\0';
     printf("The reversed string is: \'%s\' \n", reverse);
 
