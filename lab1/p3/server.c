@@ -86,7 +86,7 @@ void serve_client(int c) {
     stringLength = htons(stringLength);
     send(c, &stringLength, sizeof(stringLength), 0);
 
-    sprintf(msg, "Sent string size %s(%d) ", reversed, (int)strlen(reversed));
+    sprintf(msg, "Sent string %s with size %d ", reversed, (int)strlen(reversed));
     info(msg);
 
     send(c, reversed, strlen(reversed) + 1, 0);
@@ -113,8 +113,16 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    uint16_t port = 6666;
+    if (argc > 1) {
+        uint16_t newPort = atoi(argv[1]);
+        if (newPort != 0) {
+            port = newPort;
+        }
+    }
+
     memset(&server, 0, sizeof(server));
-    server.sin_port        = htons(6666);
+    server.sin_port        = htons(port);
     server.sin_family      = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
 
@@ -123,6 +131,8 @@ int main(int argc, char *argv[]) {
         critical(msg);
         return 1;
     }
+    sprintf(msg, "Listening for connections on port %d", port);
+    info(msg);
 
     listen(s, 5);
 
@@ -135,7 +145,7 @@ int main(int argc, char *argv[]) {
             critical("Could not accept connection");
         }
         sprintf(msg, "Connection accepted by server from %s.", inet_ntoa(client.sin_addr));
-        debug(msg);
+        info(msg);
 	
 	if (fork() == 0) {
 		serve_client(c);

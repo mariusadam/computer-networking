@@ -24,9 +24,17 @@ int main(int argc, char* argv[]) {
     size_t maxSize  = 255;
     char *sir       = NULL;
     char *reverse   = NULL;
+
+    uint16_t port = 6666;
     char serverIp[] = "193.226.40.130";
     if (argc > 1) {
         strcpy(serverIp, argv[1]);
+        if (argc > 2) {
+            uint16_t newPort = atoi(argv[2]);
+            if (newPort != 0) {
+                port = newPort;
+            }
+        }
     }
 
     c = socket(AF_INET, SOCK_STREAM, 0);
@@ -35,7 +43,7 @@ int main(int argc, char* argv[]) {
     }
 
     memset(&server, 0, sizeof(server));
-    server.sin_port        = htons(6666);
+    server.sin_port        = htons(port);
     server.sin_family      = AF_INET;
     server.sin_addr.s_addr = inet_addr(serverIp);
 
