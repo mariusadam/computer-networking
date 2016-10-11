@@ -139,6 +139,8 @@ int main(int argc, char *argv[]) {
 
     len = sizeof(client);
     memset(&client, 0, sizeof(client));
+    int zeroStatusCode = 0;
+
     while (1) {
 
         c = accept(s, (struct sockaddr *) &client, (socklen_t *)&len);
@@ -153,7 +155,7 @@ int main(int argc, char *argv[]) {
             serve_client(c);
             exit(0);
 	    } else {
-            waitpid(pid);
+            wait(&zeroStatusCode);
         }
     }
 }
