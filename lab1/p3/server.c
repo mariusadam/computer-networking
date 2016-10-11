@@ -2,6 +2,7 @@
 // Created by marius on 10/4/16.
 //
 
+#include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <stdio.h>
@@ -146,10 +147,13 @@ int main(int argc, char *argv[]) {
         }
         sprintf(msg, "Connection accepted by server from %s.", inet_ntoa(client.sin_addr));
         info(msg);
-	
-	if (fork() == 0) {
-		serve_client(c);
-		exit(0);
-	}
+
+        size_t pid = fork();
+        if (pid == 0) {
+            serve_client(c);
+            exit(0);
+	    } else {
+            waitpid(pid);
+        }
     }
 }
