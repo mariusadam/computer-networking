@@ -38,3 +38,5 @@ stat
 # Debug files
 *.dSYM/
 *.su
+
+/p3/java/*

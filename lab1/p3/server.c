@@ -139,7 +139,6 @@ int main(int argc, char *argv[]) {
 
     len = sizeof(client);
     memset(&client, 0, sizeof(client));
-    int zeroStatusCode = 0;
 
     while (1) {
 
@@ -150,12 +149,9 @@ int main(int argc, char *argv[]) {
         sprintf(msg, "Connection accepted by server from %s.", inet_ntoa(client.sin_addr));
         info(msg);
 
-        size_t pid = fork();
-        if (pid == 0) {
+        if (fork() == 0) {
             serve_client(c);
             exit(0);
-	    } else {
-            wait(&zeroStatusCode);
-        }
+	    }
     }
 }
