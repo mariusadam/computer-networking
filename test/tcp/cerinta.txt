@@ -1,0 +1,9 @@
+Client, server TCP C/C++
+
+Un client trimite unui server un nr par de numere prime (no validation required) reprezentate pe 2 octeti fara semn.
+Server-ul calculeaza produsul si trimite inapoi clientului numarul reprezentat
+pe 4 octeti fara semn.
+
+Server-ul va afisa adresa ip a fiecarui client conectat folosind o functie
+proprie care transforma adresa ip in sir de caractere
+
